@@ -1,99 +1,59 @@
+// Приложение
 export interface IProductItem {
-    id: string;
-    description: string;
-    image: string;
-    title: string;
-    category: string;
-    price: number | null;
-    selected: boolean;
+	basket: IBasket[];
+	cardsList: ICardItem[];
+	preview: string | null;
+	order: IOrder | null;
+	image: string;
 }
 
-export interface ApiResponse {
-  items: IProductItem[];
+// Товар
+export interface ICardItem {
+	id: string;
+	title: string;
+	category: string;
+	description: string;
+	image: string;
+	price: number | null;
+	inBasket: boolean;
+	button: string;
 }
 
-export type CatalogChangeEvent = {
-  catalog: IProductItem[]
-};
-
-export interface IAppState {
-  basket: IProductItem[];
-  catalog: IProductItem[];
-  order: IOrderModel;
-  preview: string | null;
-  formErrors: FormErrors;
-  setCatalog(data: IProductItem[]): void;
-  addToBasket(id: string): void;
-  removeFromBasket(id: string): void;
-  clearBasket(): void;
-  isInBasket(id: string): boolean;
-  getTotalPrice(): number;
-  countProducts(): number;
-  setPreview(item: IProductItem): void;
-  setOrderField(field: keyof IOrderModel, value: string): void;
-  validateAddress(): void;
-  validateContacts(): void;
-  getProductIDs(): string[];
+// Интерфейс формы доставки заказа
+export interface IOrderForm {
+	payment: string;
+	address: string;
 }
 
-export interface IOrderModel {
-  payment: string;
-  address: string;
-  email: string;
-  phone: string;
+export interface IOrderForms {
+	payment?: string;
+	address?: string;
+	phone?: string;
+	email?: string;
+	total?: string | number;
 }
 
-export type FormErrors = Partial<Record<keyof IOrderModel, string>>;
-
-export interface IModalData {
-  content: HTMLElement;
+// Интерфейс контактов заказа
+export interface IOrderContacts {
+	email: string;
+	phone: string;
 }
 
-export interface IFormState {
-  valid: boolean;
-  errors: string[];
+// Данные заказа
+export interface IOrder extends IOrderForm, IOrderContacts {
+	items: string[];
+	total: number;
 }
 
-export interface IPage {
-  counter: number;
-  catalog: HTMLElement[];
-  basket: HTMLElement;
-}
-
-export interface ICardActions {
-  onClick: (event: MouseEvent) => void;
-}
-
-export interface ICard {
-  id: string;
-  description?: string;
-  image?: string;
-  title: string;
-  category?: string;
-  price: number | null;
-  buttonText?: string;
-  selected?: boolean;
-}
-
-export interface IBasketCard {
-  title: string;
-  price: number | null;
-  prodactIndex: number;
-}
-
+// Корзина
 export interface IBasket {
-  items: IProductItem[];
+	quantity: number;
+	title: string;
+	price: number;
+	totalPrice: number;
 }
 
-export interface ISuccess {
-  total: number;
-}
+export type PaymenthMethods = 'card' | 'cash';
 
-export interface ISuccessActions {
-  onClick: () => void;
-}
-
-export interface IOrderResult {
-  id: string;
-  total: number;
-}
+// Тип ошибок формы
+export type FormErrors = Partial<Record<keyof IOrder, string>>;

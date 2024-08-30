@@ -219,6 +219,26 @@ interface IOrderResult {
 - сеттер error(data: { field: string; value: string; validInformation: string }) - устанавливает/убирает ошибку валидации
 - formReset(field: string): void - очищает поля ввода
 
+#### Класс Success
+Класс отображает за отображение модального окна успешного оформления заказа; наследуется от Component. Использует интерфейс ISuccess и ISuccessActions
+
+Поля класса:
+
+- close - разметка кнопки 'За новыми покупками!'
+- total - разметка суммы товаров;
+- интерфейсы ISuccess и ISuccessActions
+
+ISuccess
+
+total:string | number;
+ISuccessActions
+
+onClick: () => void;
+Конструктор: (container:HTMLElement и actions:ISuccessActions) принимает элемент успешной оплаты и устанавливает обработчик события для кнопки закрытия;
+
+Методы:
+
+- set total - устанавливает сообщение об успешной оплате;
 
 ### Слой коммуникации
 
