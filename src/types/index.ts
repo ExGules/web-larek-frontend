@@ -1,59 +1,48 @@
-// Приложение
-export interface IProductItem {
-	basket: IBasket[];
-	cardsList: ICardItem[];
-	preview: string | null;
-	order: IOrder | null;
-	image: string;
-}
+// Тип для способов оплаты
+export type PaymentMethod = 'cash' | 'online' | null;
 
-// Товар
-export interface ICardItem {
+export type Category =
+	| 'софт-скил'
+	| 'другое'
+	| 'кнопка'
+	| 'хард-скил'
+	| 'дополнительное';
+
+export type FormErrors = Partial<Record<keyof IOrder, string>>;
+
+//интерфейс для товара
+export interface IProduct {
+	category?: string;
+	description?: string;
 	id: string;
-	title: string;
-	category: string;
-	description: string;
-	image: string;
+	image?: string;
 	price: number | null;
-	inBasket: boolean;
-	button: string;
+	title: string;
 }
 
-// Интерфейс формы доставки заказа
+export interface IAppState {
+	basket: string[];
+	catalog: IProduct[];
+	order: IOrder | null;
+	preview: string | null;
+}
+
+//заказанные товары
+export interface IOrder extends IOrderForm {
+	items: string[];
+	total?: number;
+}
+
+//интерфейс для заказа
 export interface IOrderForm {
-	payment: string;
+	payment?: PaymentMethod;
+	email?: string;
+	phone?: string;
 	address: string;
 }
 
-export interface IOrderForms {
-	payment?: string;
-	address?: string;
-	phone?: string;
-	email?: string;
-	total?: string | number;
-}
-
-// Интерфейс контактов заказа
-export interface IOrderContacts {
-	email: string;
-	phone: string;
-}
-
-// Данные заказа
-export interface IOrder extends IOrderForm, IOrderContacts {
-	items: string[];
+//интерфейс для ответа на успешный заказ
+export interface IOrderResult {
+	id: string;
 	total: number;
 }
-
-// Корзина
-export interface IBasket {
-	quantity: number;
-	title: string;
-	price: number;
-	totalPrice: number;
-}
-
-export type PaymenthMethods = 'card' | 'cash';
-
-// Тип ошибок формы
-export type FormErrors = Partial<Record<keyof IOrder, string>>;

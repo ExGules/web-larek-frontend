@@ -1,10 +1,11 @@
-import { createElement, ensureElement } from '../utils/utils';
-import { Component } from './base/Component';
-import { EventEmitter } from './base/events';
+import { Component } from '../base/Component';
+import { createElement, ensureElement } from '../../utils/utils';
+import { EventEmitter } from '../base/events';
 
 interface IBasketView {
 	items: HTMLElement[];
 	total: number;
+	selected: string[];
 }
 
 export class Basket extends Component<IBasketView> {
@@ -26,21 +27,31 @@ export class Basket extends Component<IBasketView> {
 		}
 
 		this.items = [];
+		this.selected = 0;
 	}
 
 	set items(items: HTMLElement[]) {
 		if (items.length) {
 			this._list.replaceChildren(...items);
+		} else {
+			this._list.replaceChildren(
+				createElement<HTMLParagraphElement>('p', {
+					textContent: 'Корзина пуста',
+				})
+			);
+		}
+	}
+
+	set selected(total: number) {
+		
+		if (total > 0) {
 			this.setDisabled(this._button, false);
 		} else {
-			const emptyMessage = createElement<HTMLParagraphElement>('p');
-			this.setText(emptyMessage, 'Корзина пуста');
-			this._list.replaceChildren(emptyMessage);
 			this.setDisabled(this._button, true);
 		}
 	}
 
 	set total(total: number) {
-		this.setText(this._total, `${total.toString()} синапсов`);
+		this.setText(this._total, total + ` синапсов`);
 	}
 }
