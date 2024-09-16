@@ -101,21 +101,16 @@ events.on('larek:changed', () => {
 	basket.total = appData.getTotal();
 	basket.items = appData.getSelectedItems().map((item, index) => {
 		const card = new BasketItem(cloneTemplate(cardBasketTemplate), {
-			onClick: (event) => {
-				const deleteBasketButton = event.target as HTMLButtonElement;
+			onClick: () => {
 				appData.toggleOrderedItem(item.id, false);
 				page.counter = appData.itemCount();
 				basket.total = appData.getTotal();
 				basket.selected = appData.getTotal();
-				appData.total = appData.getTotal();
-				
 				events.emit('larek:changed');
 			},
 		});
 		
 		card.setIndex(index);
-		appData.total = appData.getTotal();
-		basket.selected = appData.getTotal();
 		return card.render({
 			title: item.title,
 			price: item.price,
@@ -205,7 +200,6 @@ events.on('contacts:submit', () => {
 				{
 					onClick: () => {
 						modal.close();
-						appData.clearBasket();
 						events.emit('larek:changed');
 						basket.selected = appData.getTotal();
 					},
