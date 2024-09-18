@@ -76,6 +76,7 @@ events.on('preview:changed', (item: IProduct) => {
       events.emit('product:add', { id: item.id });
     };
   }
+  
   modal.render({
     content: card.render({
       title: item.title,
@@ -95,13 +96,11 @@ function updateBasketSelected() {
 events.on('product:add', ({ id }: { id: string }) => {
   appData.toggleOrderedItem(id, true);
   events.emit('larek:changed');
-  updateBasketSelected();
 });
 
 events.on('product:remove', ({ id }: { id: string }) => {
   appData.toggleOrderedItem(id, false);
   events.emit('larek:changed');
-  updateBasketSelected();
 });
 
 events.on('larek:changed', () => {
@@ -120,6 +119,8 @@ events.on('larek:changed', () => {
       price: item.price,
     });
   });
+
+  updateBasketSelected();
 });
 
 events.on('basket:open', () => {
@@ -140,7 +141,7 @@ events.on('order:open', () => {
 });
 
 events.on(
-  /^order\..*:change/,
+  /^order..*:change/,
   (data: { field: keyof IOrderForm; value: string }) => {
     appData.setOrderField(data.field, data.value);
   }
@@ -187,7 +188,7 @@ events.on('formErrors:contactsChange', (errors: Partial<IOrderForm>) => {
 });
 
 events.on(
-  /^contacts\..*:change/,
+  /^contacts..*:change/,
   (data: { field: keyof IOrderForm; value: string }) => {
     appData.setContactField(data.field, data.value);
   }
@@ -204,14 +205,11 @@ events.on('contacts:submit', () => {
         {
           onClick: () => {
             modal.close();
-            events.emit('larek:changed');
-            updateBasketSelected();
           },
         }
       );
       appData.clearBasket();
       events.emit('larek:changed');
-      updateBasketSelected();
       modal.render({
         content: success.render({}),
       });
@@ -236,3 +234,5 @@ api.getProductList()
   .catch((err) => {
     console.error(err);
   });
+
+updateBasketSelected(); 
